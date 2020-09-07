@@ -5,8 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OktaSessionCookie {
+public class SessionInformation {
     private String id;
-    private String userId;
     private String status;
+    private String username;
+    private String firstName;
+    private String lastName;
 }

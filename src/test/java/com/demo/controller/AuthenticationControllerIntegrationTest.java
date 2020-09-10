@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -40,8 +41,8 @@ public class AuthenticationControllerIntegrationTest {
         mockMvc.perform(post("/auth")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userCredential)))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("someSessionCookieId"));
     }
 
     @Test
@@ -53,7 +54,6 @@ public class AuthenticationControllerIntegrationTest {
         mockMvc.perform(post("/auth")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userCredential)))
-                .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
 }

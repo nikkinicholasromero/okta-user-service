@@ -15,8 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class AuthenticationControllerTest {
     private MockMvc mockMvc;
@@ -54,9 +53,8 @@ public class AuthenticationControllerTest {
         mockMvc.perform(post("/auth")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userCredential)))
-                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(header().string("Set-Cookie", "sessionCookie=someSessionCookieId; Secure; HttpOnly"));
+                .andExpect(content().string("someSessionCookieId"));
 
         verify(orchestrator).orchestrate(userCredentialArgumentCaptor.capture());
 

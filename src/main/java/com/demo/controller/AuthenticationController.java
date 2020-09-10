@@ -19,15 +19,8 @@ public class AuthenticationController {
     private AuthenticationOrchestrator orchestrator;
 
     @PostMapping("")
-    public void authenticate(@RequestBody UserCredential userCredential, HttpServletResponse response) {
+    public String authenticate(@RequestBody UserCredential userCredential) {
         OktaSessionCookie oktaSessionCookie = orchestrator.orchestrate(userCredential);
-        response.addCookie(createSecureHttpOnlyCookie(oktaSessionCookie.getId()));
-    }
-
-    private Cookie createSecureHttpOnlyCookie(String value) {
-        Cookie cookie = new Cookie("sessionCookie", value);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        return cookie;
+        return oktaSessionCookie.getId();
     }
 }
